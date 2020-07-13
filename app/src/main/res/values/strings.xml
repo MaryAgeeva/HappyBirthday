@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">HappyBirthday</string>
+    <string name="app_name">Happy Birthday!</string>
+
+    <string name="detail_name">Name</string>
+    <string name="detail_birthday">Date of birth</string>
+    <string name="detail_show_birthday">Show birthday</string>
 </resources>
