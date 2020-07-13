@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--elevation-->
+    <dimen name="elevation_small">4dp</dimen>
+    <dimen name="elevation_normal">8dp</dimen>
+
+    <!--corner_radii-->
+    <dimen name="corner_radius_small">2dp</dimen>
+    <dimen name="corner_radius_medium">4dp</dimen>
+    <dimen name="corner_radius_normal">8dp</dimen>
+
+    <!--text sizes-->
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_medium_large">18sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+
+    <!--margins sizes-->
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_medium">8dp</dimen>
+    <dimen name="margin_intermediate">12dp</dimen>
+    <dimen name="margin_large_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+
+    <!--paddings sizes-->
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_intermediate">12dp</dimen>
+    <dimen name="padding_large_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+
+</resources>

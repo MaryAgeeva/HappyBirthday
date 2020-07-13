@@ -1,7 +1,8 @@
-package com.mary.happybirthday
+package com.mary.happybirthday.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mary.happybirthday.R
 
 class MainActivity : AppCompatActivity() {
 
