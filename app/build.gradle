@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.mary.happybirthday"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
+
+dependencies {
+    def common = rootProject.ext.commonDependencies
+    def app = rootProject.ext.appDependencies
+    def test = rootProject.ext.testDependencies
+    def data = rootProject.ext.dataDependencies
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation common.kotlin
+    implementation common.appcompat
+    implementation common.ktx
+    implementation common.timber
+
+    implementation data.room
+
+    implementation app.constraintLayout
+    implementation app.cardView
+    implementation app.material
+    implementation app.recyclerView
+    implementation app.navigationFragment
+    implementation app.navigation
+    implementation app.legacy
+    implementation app.lifecycle
+    implementation app.viewModel
+
+    implementation app.koin
+    implementation app.koinAndroid
+    implementation app.koinViewModel
+    implementation app.koinScope
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    kapt app.annotation
+
+    testImplementation test.jUnit
+    androidTestImplementation test.jUnitAndroidX
+    androidTestImplementation test.testRunner
+}

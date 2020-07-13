@@ -1,0 +1,81 @@
+buildscript {
+    ext {
+        kotlin_version = '1.3.61'
+        gradle_version = '3.6.3'
+
+        ktx = '1.1.0'
+        androidX = '1.1.0'
+        androidXAnnotation = '1.0.2'
+        lifecycle = '2.2.0'
+        legacy = '1.0.0'
+        cardView = '1.0.0'
+        material = '1.2.0-alpha01'
+        constraintLayout = '1.1.3'
+
+        navigation = '2.3.0-alpha02'
+        koin_version = '2.1.0'
+        timber = '4.7.1'
+        room = '2.2.2'
+
+        jUnit = '4.12'
+        test = '1.3.0-beta01'
+
+        commonDependencies = [
+                kotlin              : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
+                appcompat           : "androidx.appcompat:appcompat:$androidX",
+                ktx                 : "androidx.core:core-ktx:$ktx",
+                timber              : "com.jakewharton.timber:timber:$timber"
+        ]
+
+        appDependencies = [
+                constraintLayout    : "androidx.constraintlayout:constraintlayout:$constraintLayout",
+                cardView            : "androidx.cardview:cardview:$cardView",
+                material            : "com.google.android.material:material:$material",
+                recyclerView        : "androidx.recyclerview:recyclerview:$androidX",
+                annotation          : "androidx.annotation:annotation:$androidXAnnotation",
+                legacy              : "androidx.legacy:legacy-support-v4:$legacy",
+                lifecycle           : "androidx.lifecycle:lifecycle-extensions:$lifecycle",
+                viewModel           : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle",
+                koin                : "org.koin:koin-core:$koin_version",
+                koinAndroid         : "org.koin:koin-android:$koin_version",
+                koinScope           : "org.koin:koin-androidx-scope:$koin_version",
+                koinViewModel       : "org.koin:koin-androidx-viewmodel:$koin_version",
+                navigation          : "androidx.navigation:navigation-ui-ktx:$navigation",
+                navigationFragment  : "androidx.navigation:navigation-fragment-ktx:$navigation"
+        ]
+
+        dataDependencies = [
+                room                : "androidx.room:room-runtime:$room",
+                roomAnnotations     : "androidx.room:room-compiler:$room"
+        ]
+
+        testDependencies = [
+                testRunner      : "androidx.test:runner:$test",
+                kotlinJUnit     : "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version",
+                jUnit           : "junit:junit:$jUnit",
+                jUnitAndroidX   : "androidx.test.ext:junit:$androidX",
+                roomTest        : "androidx.room:room-testing:$room"
+        ]
+    }
+    repositories {
+        google()
+        jcenter()
+        
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradle_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
