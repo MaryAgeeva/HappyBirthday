@@ -28,18 +28,18 @@
         app:layout_constraintStart_toStartOf="@id/birthday_left_guideline"
         app:layout_constraintEnd_toEndOf="@id/birthday_right_guideline"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:src="@drawable/default_place_holder_yellow"/>
+        tools:src="@drawable/default_place_holder_green"/>
 
     <ImageView
         android:id="@+id/birthday_back_iv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitXY"
+        android:src="@drawable/android_fox_popup"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:src="@drawable/android_elephant_popup"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageButton
         android:id="@+id/birthday_close_btn"

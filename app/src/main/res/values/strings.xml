@@ -4,4 +4,17 @@
     <string name="detail_name">Name</string>
     <string name="detail_birthday">Date of birth</string>
     <string name="detail_show_birthday">Show birthday</string>
+
+    <string name="birthday_title">Today %s is</string>
+    <string name="birthday_share">Share news</string>
+    <plurals name="birthday_years">
+        <item quantity="one">year old</item>
+        <item quantity="many">years old</item>
+        <item quantity="other">years old</item>
+    </plurals>
+    <plurals name="birthday_months">
+        <item quantity="one">month old</item>
+        <item quantity="many">months old</item>
+        <item quantity="other">months old</item>
+    </plurals>
 </resources>
