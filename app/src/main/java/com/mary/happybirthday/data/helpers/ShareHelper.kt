@@ -2,8 +2,11 @@ package com.mary.happybirthday.data.helpers
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Environment
+import androidx.core.content.FileProvider
 import com.mary.happybirthday.domain.helpers.IShareHelper
+import com.mary.happybirthday.domain.utils.FileNotCreatedException
 import com.mary.happybirthday.domain.utils.FileNotSavedException
 import com.mary.happybirthday.domain.utils.empty
 import timber.log.Timber
@@ -39,11 +42,38 @@ class ShareHelper(
         }
     }
 
-    private fun createFilePath(): Paths {
+    @Throws(
+        FileNotCreatedException::class
+    )
+    override suspend fun createFileForPicture(): Uri {
+        return try {
+            val timeStamp: String = Date().toReportDate()
+            val storageDir: File = context.getExternalFilesDir(
+                Environment.DIRECTORY_PICTURES
+            )?.absoluteFile?: throw FileNotCreatedException()
+            val file = File.createTempFile(
+                "$FILE_NAME_PHOTO${timeStamp}_",
+                FORMAT,
+                storageDir
+            )
+            FileProvider.getUriForFile(
+                context,
+                "${context.applicationContext.packageName}.provider",
+                file
+            )
+        } catch (e: Exception) {
+            Timber.e("exception occured while creating Uri ShareHelper: $e, message: ${
+            e.message?: String.empty()
+            }")
+            throw FileNotCreatedException()
+        }
+    }
+
+    private fun createFilePath(forPhoto: Boolean = false): Paths {
         val folder = "${context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}$FOLDER"
         return Paths(
             folder = folder,
-            file = "$folder/$FILE_NAME${Date().toReportDate()}.$FORMAT"
+            file = "$folder/${if(forPhoto) FILE_NAME_PHOTO else FILE_NAME}${Date().toReportDate()}.$FORMAT"
         )
     }
 
@@ -57,10 +87,11 @@ class ShareHelper(
     )
 
     private companion object {
-        const val FOLDER = "/Birthday"
+        const val FOLDER = "/HappyBirthday"
         const val FILE_NAME = "Card_"
-        const val FORMAT = ".png"
+        const val FILE_NAME_PHOTO = "Photo_"
+        const val FORMAT = ".jpg"
 
-        const val REPORT_DATE_FORMAT = "dd/MM/yyyy-HH/mm/ss"
+        const val REPORT_DATE_FORMAT = "dd_MM_yyyy_HH_mm_ss"
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -35,6 +36,16 @@ class DetailFragment : BaseFragment() {
                     .resize(200, 200)
                     .error(R.drawable.default_place_holder_green)
                     .into(detail_profile_iv)
+        })
+
+        detailViewModel.photoState.observe(viewLifecycleOwner, Observer { path ->
+            if(path.toString().isNotBlank())
+                startActivityForResult(
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                        putExtra(MediaStore.EXTRA_OUTPUT, path)
+                    },
+                    REQUEST_CODE_CAMERA
+                )
         })
         detailViewModel.getInitialInfo()
     }
@@ -71,11 +82,15 @@ class DetailFragment : BaseFragment() {
         findNavController().navigate(R.id.action_detailFragment_to_imagePickerBottomSheet)
     }
 
+    override fun openCamera() {
+        detailViewModel.createPhoto()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_CAMERA -> detailViewModel.changePhoto(data?.data?: Uri.EMPTY)
+                REQUEST_CODE_CAMERA -> detailViewModel.changePhoto(Uri.EMPTY, isCamera = true)
                 REQUEST_CODE_GALLERY -> detailViewModel.changePhoto(data?.data?: Uri.EMPTY)
             }
         }

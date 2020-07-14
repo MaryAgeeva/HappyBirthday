@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mary.happybirthday.R
@@ -53,6 +54,16 @@ class BirthdayFragment : BaseFragment() {
                     .resize(500, 500)
                     .into(birthday_picture_iv)
         })
+
+        birthdayViewModel.photoState.observe(viewLifecycleOwner, Observer { path ->
+            if(path.toString().isNotBlank())
+                startActivityForResult(
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                        putExtra(MediaStore.EXTRA_OUTPUT, path)
+                    },
+                    REQUEST_CODE_CAMERA
+                )
+        })
     }
 
     override fun initUI() {
@@ -77,11 +88,15 @@ class BirthdayFragment : BaseFragment() {
         findNavController().navigate(R.id.action_birthdayFragment_to_imagePickerBottomSheet)
     }
 
+    override fun openCamera() {
+        birthdayViewModel.createPhoto()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_CAMERA -> birthdayViewModel.changePhoto(data?.data?: Uri.EMPTY)
+                REQUEST_CODE_CAMERA -> birthdayViewModel.changePhoto(Uri.EMPTY, isCamera = true)
                 REQUEST_CODE_GALLERY -> birthdayViewModel.changePhoto(data?.data?: Uri.EMPTY)
             }
         }

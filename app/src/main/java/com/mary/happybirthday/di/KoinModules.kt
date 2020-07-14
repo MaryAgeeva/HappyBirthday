@@ -5,6 +5,7 @@ import com.mary.happybirthday.data.helpers.SharedPreferencesHelper
 import com.mary.happybirthday.data.repository.BabyRepository
 import com.mary.happybirthday.domain.helpers.IShareHelper
 import com.mary.happybirthday.domain.repository.IBabyRepository
+import com.mary.happybirthday.domain.use_cases.CreatePhotoFileUseCase
 import com.mary.happybirthday.domain.use_cases.birthday_screen.ChangePhotoUseCase
 import com.mary.happybirthday.domain.use_cases.birthday_screen.GetBirthdayInfoUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.ChangeBabyInfoUseCase
@@ -20,11 +21,16 @@ import org.koin.dsl.module
 val appModule = module {
     single { SharedPreferencesHelper(get()) }
     single<IBabyRepository> { BabyRepository(get()) }
+    single<IShareHelper> { ShareHelper(get()) }
 }
 
 val featuresModule = module {
+    factory {
+        CreatePhotoFileUseCase(get())
+    }
+
     scope(named<DetailFragment>()) {
-        viewModel { DetailViewModel(get(), get()) }
+        viewModel { DetailViewModel(get(), get(), get()) }
         scoped {
             GetBabyInfoUseCase(get())
         }
@@ -34,15 +40,12 @@ val featuresModule = module {
     }
 
     scope(named<BirthdayFragment>()) {
-        viewModel { BirthdayViewModel(get(), get()) }
+        viewModel { BirthdayViewModel(get(), get(), get()) }
         scoped {
             GetBirthdayInfoUseCase(get())
         }
         scoped {
             ChangePhotoUseCase(get())
-        }
-        scoped<IShareHelper> {
-            ShareHelper(get())
         }
     }
 }

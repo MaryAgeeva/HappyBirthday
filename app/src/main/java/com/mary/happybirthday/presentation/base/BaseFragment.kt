@@ -79,12 +79,7 @@ abstract class BaseFragment : Fragment() {
         )
     }
 
-    private fun openCamera() {
-        startActivityForResult(
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE),
-            REQUEST_CODE_CAMERA
-        )
-    }
+    protected abstract fun openCamera()
 
     protected companion object {
         const val REQUEST_CODE_WRITE_STORAGE = 111
