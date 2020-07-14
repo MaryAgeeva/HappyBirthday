@@ -11,6 +11,7 @@ buildscript {
         cardView = '1.0.0'
         material = '1.2.0-alpha01'
         constraintLayout = '1.1.3'
+        picasso = '2.71828'
 
         navigation = '2.3.0-alpha02'
         koin_version = '2.1.0'
@@ -32,6 +33,7 @@ buildscript {
                 cardView            : "androidx.cardview:cardview:$cardView",
                 material            : "com.google.android.material:material:$material",
                 recyclerView        : "androidx.recyclerview:recyclerview:$androidX",
+                picasso             : "com.squareup.picasso:picasso:$picasso",
                 annotation          : "androidx.annotation:annotation:$androidXAnnotation",
                 legacy              : "androidx.legacy:legacy-support-v4:$legacy",
                 lifecycle           : "androidx.lifecycle:lifecycle-extensions:$lifecycle",

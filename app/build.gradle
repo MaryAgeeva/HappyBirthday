@@ -62,6 +62,7 @@ dependencies {
     implementation app.legacy
     implementation app.lifecycle
     implementation app.viewModel
+    implementation app.picasso
 
     implementation app.koin
     implementation app.koinAndroid

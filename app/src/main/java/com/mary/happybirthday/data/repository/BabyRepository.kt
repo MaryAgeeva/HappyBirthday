@@ -31,18 +31,10 @@ class BabyRepository(
         )
     }
 
-    override suspend fun changeBirthday(day: Int, month: Int, year: Int) {
-        val birthday = Calendar.getInstance().apply {
-            set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month)
-            set(Calendar.DAY_OF_YEAR, day)
-            set(Calendar.HOUR, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }.time
-        sharedPreferences.setBirthday(birthday.time)
+    override suspend fun changeBirthday(date: Date) {
+        sharedPreferences.setBirthday(date.time)
         currentBaby = currentBaby.copy(
-            birthday = birthday
+            birthday = date
         )
     }
 

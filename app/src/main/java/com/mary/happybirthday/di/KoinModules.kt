@@ -20,7 +20,7 @@ val appModule = module {
 
 val featuresModule = module {
     scope(named<DetailFragment>()) {
-        viewModel { DetailViewModel() }
+        viewModel { DetailViewModel(get(), get()) }
         scoped {
             GetBabyInfoUseCase(get())
         }
