@@ -3,6 +3,7 @@ package com.mary.happybirthday.di
 import com.mary.happybirthday.data.helpers.SharedPreferencesHelper
 import com.mary.happybirthday.data.repository.BabyRepository
 import com.mary.happybirthday.domain.repository.IBabyRepository
+import com.mary.happybirthday.domain.use_cases.birthday_screen.GetBirthdayInfoUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.ChangeBabyInfoUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.GetBabyInfoUseCase
 import com.mary.happybirthday.presentation.birthday_screen.BirthdayFragment
@@ -30,6 +31,9 @@ val featuresModule = module {
     }
 
     scope(named<BirthdayFragment>()) {
-        viewModel { BirthdayViewModel() }
+        viewModel { BirthdayViewModel(get()) }
+        scoped {
+            GetBirthdayInfoUseCase(get())
+        }
     }
 }

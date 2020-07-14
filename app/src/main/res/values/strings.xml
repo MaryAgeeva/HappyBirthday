@@ -4,6 +4,7 @@
     <string name="detail_name">Name</string>
     <string name="detail_birthday">Date of birth</string>
     <string name="detail_show_birthday">Show birthday</string>
+    <string name="detail_save">Save info</string>
 
     <string name="birthday_title">Today %s is</string>
     <string name="birthday_share">Share news</string>
@@ -17,4 +18,8 @@
         <item quantity="many">months old</item>
         <item quantity="other">months old</item>
     </plurals>
+
+    <string name="picker_title">Select how to get photo:</string>
+    <string name="picker_gallery">Gallery</string>
+    <string name="picker_camera">Make photo</string>
 </resources>

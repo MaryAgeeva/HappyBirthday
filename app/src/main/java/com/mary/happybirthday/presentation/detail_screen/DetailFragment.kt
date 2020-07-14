@@ -1,6 +1,10 @@
 package com.mary.happybirthday.presentation.detail_screen
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -27,9 +31,20 @@ class DetailFragment : BaseFragment() {
             }?: detail_profile_iv.setImageResource(R.drawable.default_place_holder_green)
             detail_show_btn.isEnabled = state.canShowInfo
         })
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.
+            getLiveData<Boolean>(CAMERA_CHOSEN)?.observe(viewLifecycleOwner, Observer { isCamera ->
+            if(isCamera)
+                openCamera()
+            else openGallery()
+        })
     }
 
     override fun initUI() {
+        detail_profile_iv.setOnClickListener {
+            findNavController().navigate(R.id.action_detailFragment_to_imagePickerBottomSheet)
+        }
+
         detail_dob_txt.setOnClickListener {
             MaterialDatePicker.Builder.datePicker()
                 .setSelection(System.currentTimeMillis())
@@ -41,12 +56,41 @@ class DetailFragment : BaseFragment() {
                 }
                 .show(parentFragmentManager, PICKER_TAG)
         }
+
         detail_show_btn.setOnClickListener {
             findNavController().navigate(R.id.action_detailFragment_to_birthdayFragment)
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_CAMERA -> detailViewModel.changePhoto(data?.data?: Uri.EMPTY)
+                REQUEST_CODE_GALLERY -> detailViewModel.changePhoto(data?.data?: Uri.EMPTY)
+            }
+        }
+    }
+
+    private fun openGallery() {
+        startActivityForResult(
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+            REQUEST_CODE_GALLERY
+        )
+    }
+
+    private fun openCamera() {
+        startActivityForResult(
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE),
+            REQUEST_CODE_CAMERA
+        )
+    }
+
     companion object {
         private const val PICKER_TAG = "com.mary.happybirthday.presentation.detail_screen.DetailFragment.MaterialDatePicker"
+        private const val REQUEST_CODE_GALLERY = 4321
+        private const val REQUEST_CODE_CAMERA = 1234
+
+        const val CAMERA_CHOSEN = "com.mary.happybirthday.presentation.detail_screen.DetailFragment.CAMERA_CHOSEN"
     }
 }

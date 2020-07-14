@@ -13,10 +13,17 @@
         <action
             android:id="@+id/action_detailFragment_to_birthdayFragment"
             app:destination="@id/birthdayFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_imagePickerBottomSheet"
+            app:destination="@id/imagePickerBottomSheet" />
     </fragment>
     <fragment
         android:id="@+id/birthdayFragment"
         android:name="com.mary.happybirthday.presentation.birthday_screen.BirthdayFragment"
         android:label="birthday_fragment"
         tools:layout="@layout/birthday_fragment" />
+    <dialog
+        android:id="@+id/imagePickerBottomSheet"
+        android:name="com.mary.happybirthday.presentation.detail_screen.ImagePickerBottomSheet"
+        android:label="ImagePickerBottomSheet" />
 </navigation>

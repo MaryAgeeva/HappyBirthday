@@ -77,6 +77,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/detail_save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_save"
+        android:backgroundTint="@color/primary"
+        style="@style/Widget.MaterialComponents.Button"
+        android:visibility="gone"
+        android:layout_marginVertical="@dimen/margin_large"
+        android:paddingHorizontal="@dimen/padding_large_medium"
+        android:paddingVertical="@dimen/padding_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_dob_txt"/>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/detail_show_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,6 +104,6 @@
         android:paddingVertical="@dimen/padding_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detail_dob_txt"/>
+        app:layout_constraintTop_toBottomOf="@id/detail_save_btn"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

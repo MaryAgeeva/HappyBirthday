@@ -20,6 +20,7 @@
         app:layout_constraintGuide_percent="0.85"/>
 
     <ImageView
+        android:id="@+id/birthday_picture_iv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintVertical_bias="0.78"

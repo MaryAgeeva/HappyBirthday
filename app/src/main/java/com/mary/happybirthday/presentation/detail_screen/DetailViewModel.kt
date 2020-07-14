@@ -1,9 +1,11 @@
 package com.mary.happybirthday.presentation.detail_screen
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.mary.happybirthday.domain.use_cases.detail_screen.Birthday
 import com.mary.happybirthday.domain.use_cases.detail_screen.ChangeBabyInfoUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.GetBabyInfoUseCase
+import com.mary.happybirthday.domain.use_cases.detail_screen.Picture
 import com.mary.happybirthday.domain.utils.empty
 import com.mary.happybirthday.presentation.base.BaseViewModel
 import com.mary.happybirthday.presentation.utils.toDateString
@@ -28,6 +30,20 @@ internal class DetailViewModel(
             )
             try {
                 changeInfoAction(Birthday(birthday))
+            } catch (e: Exception) {
+                Timber.e("error occured in changeBirthday: $e, message: ${e.message?: String.empty()}")
+            }
+        }
+    }
+
+    internal fun changePhoto(path: Uri) {
+        viewModelScope.launch {
+            val photo = path.toString()
+            state.value = state.value?.copy(
+                picture = photo
+            )
+            try {
+                changeInfoAction(Picture(photo))
             } catch (e: Exception) {
                 Timber.e("error occured in changeBirthday: $e, message: ${e.message?: String.empty()}")
             }

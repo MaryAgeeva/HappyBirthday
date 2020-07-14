@@ -1,33 +1,37 @@
 package com.mary.happybirthday.presentation.birthday_screen
 
-import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
 import com.mary.happybirthday.R
+import com.mary.happybirthday.presentation.base.BaseFragment
+import kotlinx.android.synthetic.main.birthday_fragment.*
+import org.koin.androidx.scope.lifecycleScope
+import org.koin.androidx.viewmodel.scope.viewModel
+import kotlin.random.Random
 
-class BirthdayFragment : Fragment() {
+class BirthdayFragment : BaseFragment() {
 
-    companion object {
-        fun newInstance() = BirthdayFragment()
+    private val birthdayViewModel: BirthdayViewModel by lifecycleScope.viewModel(this)
+    override val viewResource = R.layout.birthday_fragment
+
+    override fun initUI() {
+        selectRandomStyle()
+
     }
 
-    private lateinit var viewModel: BirthdayViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.birthday_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(BirthdayViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun selectRandomStyle() {
+        when(Random.Default.nextInt(3)) {
+            0 -> {
+                birthday_back_iv.setImageResource(R.drawable.android_elephant_popup)
+                birthday_picture_iv.setImageResource(R.drawable.default_place_holder_yellow)
+            }
+            1 -> {
+                birthday_back_iv.setImageResource(R.drawable.android_fox_popup)
+                birthday_picture_iv.setImageResource(R.drawable.default_place_holder_green)
+            }
+            2 -> {
+                birthday_back_iv.setImageResource(R.drawable.android_pelican_popup)
+                birthday_picture_iv.setImageResource(R.drawable.default_place_holder_blue)
+            }
+        }
     }
 
 }
