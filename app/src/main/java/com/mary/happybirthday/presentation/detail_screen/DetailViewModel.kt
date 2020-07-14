@@ -2,10 +2,7 @@ package com.mary.happybirthday.presentation.detail_screen
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.mary.happybirthday.domain.use_cases.detail_screen.Birthday
-import com.mary.happybirthday.domain.use_cases.detail_screen.ChangeBabyInfoUseCase
-import com.mary.happybirthday.domain.use_cases.detail_screen.GetBabyInfoUseCase
-import com.mary.happybirthday.domain.use_cases.detail_screen.Picture
+import com.mary.happybirthday.domain.use_cases.detail_screen.*
 import com.mary.happybirthday.domain.utils.empty
 import com.mary.happybirthday.presentation.base.BaseViewModel
 import com.mary.happybirthday.presentation.utils.toDateString
@@ -22,11 +19,28 @@ internal class DetailViewModel(
         getInitialInfo()
     }
 
+    internal fun changeName(name: String) {
+        viewModelScope.launch {
+            try {
+                val birthday = state.value?.birthday?: String.empty()
+                changeInfoAction(Name(name))
+                state.value = state.value?.copy(
+                    name = name,
+                    canShowInfo = birthday.isNotBlank() && name.isNotBlank()
+                )
+            } catch (e: Exception) {
+                Timber.e("error occured in changeName: $e, message: ${e.message?: String.empty()}")
+            }
+        }
+    }
+
     internal fun changeBirthday(millis: Long) {
         viewModelScope.launch {
             val birthday = Date(millis)
+            val name = state.value?.name?: String.empty()
             state.value = state.value?.copy(
-                birthday = birthday.toDateString()
+                birthday = birthday.toDateString(),
+                canShowInfo = name.isNotBlank()
             )
             try {
                 changeInfoAction(Birthday(birthday))
@@ -45,7 +59,7 @@ internal class DetailViewModel(
             try {
                 changeInfoAction(Picture(photo))
             } catch (e: Exception) {
-                Timber.e("error occured in changeBirthday: $e, message: ${e.message?: String.empty()}")
+                Timber.e("error occured in changePhoto: $e, message: ${e.message?: String.empty()}")
             }
         }
     }

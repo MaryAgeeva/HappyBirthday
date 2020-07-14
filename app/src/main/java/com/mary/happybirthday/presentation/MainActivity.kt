@@ -34,7 +34,12 @@ class MainActivity : AppCompatActivity() {
     private fun setUIVisibility() {
         findNavController(R.id.main_frame).addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
-                R.id.detailFragment -> supportActionBar?.show()
+                R.id.detailFragment -> {
+                    supportActionBar?.apply {
+                        title = getString(R.string.app_name)
+                        show()
+                    }
+                }
                 R.id.birthdayFragment -> supportActionBar?.hide()
             }
         }

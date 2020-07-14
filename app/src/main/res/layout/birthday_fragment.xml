@@ -35,7 +35,7 @@
         android:id="@+id/birthday_back_iv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,17 +116,16 @@
         app:layout_constraintEnd_toEndOf="@id/birthday_right_guideline"
         tools:text="MONTHS OLD!"/>
 
-    <Button
+    <android.widget.Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_share"
+        android:background="@drawable/btn_share_bg"
         android:text="@string/birthday_share"
         android:padding="@dimen/padding_medium"
         android:drawableEnd="@drawable/ic_share_pink"
         android:textColor="@color/accent"
         android:textAllCaps="false"
         android:textSize="@dimen/text_size_medium_large"
-        style="@style/Widget.AppCompat.Button.Borderless"
         app:layout_constraintTop_toBottomOf="@id/birthday_footer_tv"
         app:layout_constraintStart_toStartOf="@id/birthday_left_guideline"
         app:layout_constraintEnd_toEndOf="@id/birthday_right_guideline"/>

@@ -21,5 +21,5 @@
 
     <string name="picker_title">Select how to get photo:</string>
     <string name="picker_gallery">Gallery</string>
-    <string name="picker_camera">Make photo</string>
+    <string name="picker_camera">Camera</string>
 </resources>

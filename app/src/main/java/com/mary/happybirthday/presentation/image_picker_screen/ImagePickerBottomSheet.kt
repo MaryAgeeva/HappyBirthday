@@ -1,4 +1,4 @@
-package com.mary.happybirthday.presentation.detail_screen
+package com.mary.happybirthday.presentation.image_picker_screen
 
 import android.os.Bundle
 import android.view.View
@@ -16,14 +16,20 @@ class ImagePickerBottomSheet : BaseBottomSheet() {
 
         picker_gallery_btn.setOnClickListener {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                DetailFragment.CAMERA_CHOSEN, false
+                CAMERA_CHOSEN, false
             )
+            dismiss()
         }
 
         picker_camera_btn.setOnClickListener {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                DetailFragment.CAMERA_CHOSEN, true
+                CAMERA_CHOSEN, true
             )
+            dismiss()
         }
+    }
+
+    companion object {
+        const val CAMERA_CHOSEN = "com.mary.happybirthday.presentation.image_picker_screen.CAMERA_CHOSEN"
     }
 }

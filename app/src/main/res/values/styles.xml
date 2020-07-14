@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
@@ -12,7 +12,17 @@
 
     <style name="TextHeader">
         <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textSize">@dimen/text_size_medium_large</item>
+    </style>
+
+    <style name="ShareButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/btn_share_bg</item>
+        <item name="android:text">@string/birthday_share</item>
+        <item name="android:padding">@dimen/padding_medium</item>
+        <item name="android:drawableEnd">@drawable/ic_share_pink</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_medium_large</item>
     </style>
 
 </resources>

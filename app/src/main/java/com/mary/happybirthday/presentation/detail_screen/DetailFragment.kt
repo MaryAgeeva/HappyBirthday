@@ -5,11 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mary.happybirthday.R
 import com.mary.happybirthday.presentation.base.BaseFragment
+import com.mary.happybirthday.presentation.image_picker_screen.ImagePickerBottomSheet.Companion.CAMERA_CHOSEN
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_fragment.*
 import org.koin.androidx.scope.lifecycleScope
@@ -24,7 +26,8 @@ class DetailFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         detailViewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
-            detail_name_edit.setText(state.name)
+            if(state.name != detail_name_edit.text.toString())
+                detail_name_edit.setText(state.name)
             detail_dob_edit.setText(state.birthday)
             state.picture?.let {
                 Picasso.get().load(state.picture).into(detail_profile_iv)
@@ -41,11 +44,15 @@ class DetailFragment : BaseFragment() {
     }
 
     override fun initUI() {
+        detail_name_edit.doOnTextChanged { text, _, _, _ ->
+            detailViewModel.changeName(text.toString())
+        }
+
         detail_profile_iv.setOnClickListener {
             findNavController().navigate(R.id.action_detailFragment_to_imagePickerBottomSheet)
         }
 
-        detail_dob_txt.setOnClickListener {
+        detail_dob_edit.setOnClickListener {
             MaterialDatePicker.Builder.datePicker()
                 .setSelection(System.currentTimeMillis())
                 .build()
@@ -90,7 +97,5 @@ class DetailFragment : BaseFragment() {
         private const val PICKER_TAG = "com.mary.happybirthday.presentation.detail_screen.DetailFragment.MaterialDatePicker"
         private const val REQUEST_CODE_GALLERY = 4321
         private const val REQUEST_CODE_CAMERA = 1234
-
-        const val CAMERA_CHOSEN = "com.mary.happybirthday.presentation.detail_screen.DetailFragment.CAMERA_CHOSEN"
     }
 }
