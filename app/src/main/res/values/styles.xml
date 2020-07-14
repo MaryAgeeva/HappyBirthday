@@ -15,14 +15,4 @@
         <item name="android:textSize">@dimen/text_size_medium_large</item>
     </style>
 
-    <style name="ShareButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/btn_share_bg</item>
-        <item name="android:text">@string/birthday_share</item>
-        <item name="android:padding">@dimen/padding_medium</item>
-        <item name="android:drawableEnd">@drawable/ic_share_pink</item>
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/text_size_medium_large</item>
-    </style>
-
 </resources>

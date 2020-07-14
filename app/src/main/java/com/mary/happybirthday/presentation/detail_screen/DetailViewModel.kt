@@ -15,10 +15,6 @@ internal class DetailViewModel(
     private val changeInfoAction: ChangeBabyInfoUseCase
 ) : BaseViewModel<DetailViewState>() {
 
-    init {
-        getInitialInfo()
-    }
-
     internal fun changeName(name: String) {
         viewModelScope.launch {
             try {
@@ -64,7 +60,7 @@ internal class DetailViewModel(
         }
     }
 
-    private fun getInitialInfo() {
+    internal fun getInitialInfo() {
         viewModelScope.launch {
             try {
                 val baby = getInitAction()

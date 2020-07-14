@@ -1,8 +1,11 @@
 package com.mary.happybirthday.di
 
+import com.mary.happybirthday.data.helpers.ShareHelper
 import com.mary.happybirthday.data.helpers.SharedPreferencesHelper
 import com.mary.happybirthday.data.repository.BabyRepository
+import com.mary.happybirthday.domain.helpers.IShareHelper
 import com.mary.happybirthday.domain.repository.IBabyRepository
+import com.mary.happybirthday.domain.use_cases.birthday_screen.ChangePhotoUseCase
 import com.mary.happybirthday.domain.use_cases.birthday_screen.GetBirthdayInfoUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.ChangeBabyInfoUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.GetBabyInfoUseCase
@@ -31,9 +34,15 @@ val featuresModule = module {
     }
 
     scope(named<BirthdayFragment>()) {
-        viewModel { BirthdayViewModel(get()) }
+        viewModel { BirthdayViewModel(get(), get()) }
         scoped {
             GetBirthdayInfoUseCase(get())
+        }
+        scoped {
+            ChangePhotoUseCase(get())
+        }
+        scoped<IShareHelper> {
+            ShareHelper(get())
         }
     }
 }

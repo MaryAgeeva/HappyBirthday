@@ -21,12 +21,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_medium"
+        android:src="@drawable/default_place_holder_green"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="@id/detail_back_iv"
         app:layout_constraintStart_toStartOf="@id/detail_back_iv"
         app:layout_constraintEnd_toEndOf="@id/detail_back_iv"
-        app:layout_constraintBottom_toBottomOf="@id/detail_back_iv"
-        tools:src="@drawable/default_place_holder_green"/>
+        app:layout_constraintBottom_toBottomOf="@id/detail_back_iv"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/detail_name_txt"

@@ -4,14 +4,12 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mary.happybirthday.R
 import com.mary.happybirthday.presentation.base.BaseFragment
-import com.mary.happybirthday.presentation.image_picker_screen.ImagePickerBottomSheet.Companion.CAMERA_CHOSEN
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_fragment.*
 import org.koin.androidx.scope.lifecycleScope
@@ -29,18 +27,16 @@ class DetailFragment : BaseFragment() {
             if(state.name != detail_name_edit.text.toString())
                 detail_name_edit.setText(state.name)
             detail_dob_edit.setText(state.birthday)
-            state.picture?.let {
-                Picasso.get().load(state.picture).into(detail_profile_iv)
-            }?: detail_profile_iv.setImageResource(R.drawable.default_place_holder_green)
             detail_show_btn.isEnabled = state.canShowInfo
-        })
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.
-            getLiveData<Boolean>(CAMERA_CHOSEN)?.observe(viewLifecycleOwner, Observer { isCamera ->
-            if(isCamera)
-                openCamera()
-            else openGallery()
+            if(state.picture != null)
+                Picasso.get()
+                    .load(state.picture)
+                    .resize(200, 200)
+                    .error(R.drawable.default_place_holder_green)
+                    .into(detail_profile_iv)
         })
+        detailViewModel.getInitialInfo()
     }
 
     override fun initUI() {
@@ -49,7 +45,9 @@ class DetailFragment : BaseFragment() {
         }
 
         detail_profile_iv.setOnClickListener {
-            findNavController().navigate(R.id.action_detailFragment_to_imagePickerBottomSheet)
+            checkPermissionAndExecute {
+                findNavController().navigate(R.id.action_detailFragment_to_imagePickerBottomSheet)
+            }
         }
 
         detail_dob_edit.setOnClickListener {
@@ -69,6 +67,10 @@ class DetailFragment : BaseFragment() {
         }
     }
 
+    override fun actionOnStoragePermissionGranted() {
+        findNavController().navigate(R.id.action_detailFragment_to_imagePickerBottomSheet)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == RESULT_OK) {
@@ -79,23 +81,7 @@ class DetailFragment : BaseFragment() {
         }
     }
 
-    private fun openGallery() {
-        startActivityForResult(
-            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
-            REQUEST_CODE_GALLERY
-        )
-    }
-
-    private fun openCamera() {
-        startActivityForResult(
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE),
-            REQUEST_CODE_CAMERA
-        )
-    }
-
     companion object {
         private const val PICKER_TAG = "com.mary.happybirthday.presentation.detail_screen.DetailFragment.MaterialDatePicker"
-        private const val REQUEST_CODE_GALLERY = 4321
-        private const val REQUEST_CODE_CAMERA = 1234
     }
 }

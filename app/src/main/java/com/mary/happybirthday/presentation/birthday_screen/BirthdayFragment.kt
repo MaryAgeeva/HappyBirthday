@@ -1,5 +1,8 @@
 package com.mary.happybirthday.presentation.birthday_screen
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -45,7 +48,10 @@ class BirthdayFragment : BaseFragment() {
                 }
             )
             if(state.photo != null)
-                Picasso.get().load(state.photo).into(birthday_picture_iv)
+                Picasso.get()
+                    .load(state.photo)
+                    .resize(500, 500)
+                    .into(birthday_picture_iv)
         })
     }
 
@@ -55,6 +61,30 @@ class BirthdayFragment : BaseFragment() {
         birthday_close_btn.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        birthday_camera_btn.setOnClickListener {
+            checkPermissionAndExecute {
+                findNavController().navigate(R.id.action_birthdayFragment_to_imagePickerBottomSheet)
+            }
+        }
+
+        birthday_share_btn.setOnClickListener {
+
+        }
+    }
+
+    override fun actionOnStoragePermissionGranted() {
+        findNavController().navigate(R.id.action_birthdayFragment_to_imagePickerBottomSheet)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_CAMERA -> birthdayViewModel.changePhoto(data?.data?: Uri.EMPTY)
+                REQUEST_CODE_GALLERY -> birthdayViewModel.changePhoto(data?.data?: Uri.EMPTY)
+            }
+        }
     }
 
     private fun selectRandomStyle() {
@@ -62,14 +92,17 @@ class BirthdayFragment : BaseFragment() {
             0 -> {
                 birthday_back_iv.setImageResource(R.drawable.android_elephant_popup)
                 birthday_picture_iv.setImageResource(R.drawable.default_place_holder_yellow)
+                birthday_camera_btn.setImageResource(R.drawable.ic_camera_yellow)
             }
             1 -> {
                 birthday_back_iv.setImageResource(R.drawable.android_fox_popup)
                 birthday_picture_iv.setImageResource(R.drawable.default_place_holder_green)
+                birthday_camera_btn.setImageResource(R.drawable.ic_camera_green)
             }
             2 -> {
                 birthday_back_iv.setImageResource(R.drawable.android_pelican_popup)
                 birthday_picture_iv.setImageResource(R.drawable.default_place_holder_blue)
+                birthday_camera_btn.setImageResource(R.drawable.ic_camera_blue)
             }
         }
     }

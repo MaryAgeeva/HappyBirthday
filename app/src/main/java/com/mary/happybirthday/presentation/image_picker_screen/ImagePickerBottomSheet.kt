@@ -16,14 +16,14 @@ class ImagePickerBottomSheet : BaseBottomSheet() {
 
         picker_gallery_btn.setOnClickListener {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                CAMERA_CHOSEN, false
+                CAMERA_CHOSEN, ImagePickType.GALLERY
             )
             dismiss()
         }
 
         picker_camera_btn.setOnClickListener {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                CAMERA_CHOSEN, true
+                CAMERA_CHOSEN, ImagePickType.CAMERA
             )
             dismiss()
         }
@@ -32,4 +32,8 @@ class ImagePickerBottomSheet : BaseBottomSheet() {
     companion object {
         const val CAMERA_CHOSEN = "com.mary.happybirthday.presentation.image_picker_screen.CAMERA_CHOSEN"
     }
+}
+
+enum class ImagePickType {
+    CAMERA, GALLERY, UNDEFINED
 }
