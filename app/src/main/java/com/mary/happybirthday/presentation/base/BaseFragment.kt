@@ -38,8 +38,7 @@ abstract class BaseFragment : Fragment() {
                     when (type) {
                         ImagePickType.CAMERA -> openCamera()
                         ImagePickType.GALLERY -> openGallery()
-                        else -> { /* Do nothing */
-                        }
+                        else -> { /* Do nothing */ }
                     }
                 }
             })

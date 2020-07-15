@@ -12,7 +12,7 @@
 
     <style name="TextHeader">
         <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">@dimen/text_size_medium_large</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
     </style>
 
 </resources>

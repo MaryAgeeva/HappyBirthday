@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--elevation-->
     <dimen name="elevation_small">4dp</dimen>
     <dimen name="elevation_normal">8dp</dimen>
 
-    <!--corner_radii-->
-    <dimen name="corner_radius_small">2dp</dimen>
-    <dimen name="corner_radius_medium">4dp</dimen>
-    <dimen name="corner_radius_normal">8dp</dimen>
-
     <!--text sizes-->
-    <dimen name="text_size_small">12sp</dimen>
-    <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_medium_large">18sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">24sp</dimen>
 
     <!--margins sizes-->

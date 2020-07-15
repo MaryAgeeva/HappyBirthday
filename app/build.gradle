@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
@@ -30,10 +29,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
@@ -43,15 +38,12 @@ dependencies {
     def common = rootProject.ext.commonDependencies
     def app = rootProject.ext.appDependencies
     def test = rootProject.ext.testDependencies
-    def data = rootProject.ext.dataDependencies
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation common.kotlin
     implementation common.appcompat
     implementation common.ktx
     implementation common.timber
-
-    implementation data.room
 
     implementation app.constraintLayout
     implementation app.cardView
@@ -69,9 +61,6 @@ dependencies {
     implementation app.koinViewModel
     implementation app.koinScope
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     kapt app.annotation
 
     testImplementation test.jUnit
