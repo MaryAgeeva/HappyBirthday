@@ -18,6 +18,7 @@
         <item quantity="many">months old</item>
         <item quantity="other">months old</item>
     </plurals>
+    <string name="birthday_choose_send_type">Send with&#8230;</string>
 
     <string name="picker_title">Select how to get photo:</string>
     <string name="picker_gallery">Gallery</string>

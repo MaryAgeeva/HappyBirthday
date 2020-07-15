@@ -1,6 +1,7 @@
 package com.mary.happybirthday.presentation.birthday_screen
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mary.happybirthday.R
 import com.mary.happybirthday.presentation.base.BaseFragment
+import com.mary.happybirthday.presentation.utils.ScreenshotHelper
+import com.mary.happybirthday.presentation.utils.hide
+import com.mary.happybirthday.presentation.utils.show
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.birthday_fragment.*
 import org.koin.androidx.scope.lifecycleScope
@@ -18,6 +22,8 @@ import kotlin.random.Random
 class BirthdayFragment : BaseFragment() {
 
     private val birthdayViewModel: BirthdayViewModel by lifecycleScope.viewModel(this)
+    private val screenshotHelper : ScreenshotHelper by lifecycleScope.inject()
+
     override val viewResource = R.layout.birthday_fragment
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -45,6 +51,14 @@ class BirthdayFragment : BaseFragment() {
             if(path.temporaryUri.toString().isNotBlank())
                 openCamera(path.temporaryUri)
         })
+
+        birthdayViewModel.reportState.observe(viewLifecycleOwner, Observer { path ->
+            if(path.toString().isNotBlank()) {
+                birthday_pb.hide()
+                birthday_btn_group.show()
+                openShareScreen(path)
+            }
+        })
     }
 
     override fun initUI() {
@@ -61,7 +75,11 @@ class BirthdayFragment : BaseFragment() {
         }
 
         birthday_share_btn.setOnClickListener {
-
+            birthday_btn_group.hide()
+            screenshotHelper.takeScreenshot(requireView().rootView)?.let { screenshot ->
+                birthday_pb.show()
+                birthdayViewModel.shareScreenshot(screenshot)
+            }
         }
     }
 
@@ -75,6 +93,15 @@ class BirthdayFragment : BaseFragment() {
 
     override fun savePhoto(path: Uri, isCameraPhoto: Boolean) {
         birthdayViewModel.changePhoto(path, isCameraPhoto)
+    }
+
+    private fun openShareScreen(path: Uri) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/*"
+            putExtra(Intent.EXTRA_STREAM, path)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(intent, getString(R.string.birthday_choose_send_type)))
     }
 
     @DrawableRes private fun mapAge(age: Int) : Int {

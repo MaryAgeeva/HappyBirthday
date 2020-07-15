@@ -24,7 +24,7 @@ class ShareHelper(
     @Throws(
         FileNotSavedException::class
     )
-    override suspend fun saveCard(bitmap: Bitmap): String {
+    override suspend fun saveCard(bitmap: Bitmap): Uri {
         val (folderPath, filePath) = createFilePath()
         return try {
             val folder = File(folderPath)
@@ -32,10 +32,10 @@ class ShareHelper(
                 folder.mkdir()
             val file = File(filePath)
             FileOutputStream(file).use { stream ->
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                 stream.flush()
             }
-            filePath
+            getUri(file)
         } catch (e: Exception) {
             Timber.e("exception occured while saving screenshot ShareHelper: $e, message: ${
                 e.message?: String.empty()

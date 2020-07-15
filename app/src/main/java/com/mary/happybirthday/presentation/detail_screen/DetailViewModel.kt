@@ -19,6 +19,23 @@ internal class DetailViewModel(
     createPhotoAction: CreatePhotoFileUseCase
 ) : BaseViewModel<DetailViewState>(createPhotoAction) {
 
+    internal fun getInitialInfo() {
+        viewModelScope.launch {
+            try {
+                val baby = getInitAction()
+                val birthday = baby.birthday?.toDateString() ?: String.empty()
+                state.value = DetailViewState(
+                    picture = baby.photo,
+                    name = baby.name,
+                    birthday = birthday,
+                    canShowInfo = baby.name.isNotBlank() && birthday.isNotBlank()
+                )
+            } catch (e: Exception) {
+                Timber.e("error occured in getInitAction: $e, message: ${e.message?: String.empty()}")
+            }
+        }
+    }
+
     internal fun changeName(name: String) {
         viewModelScope.launch {
             try {
@@ -64,23 +81,6 @@ internal class DetailViewModel(
                 )
             } catch (e: Exception) {
                 Timber.e("error occured in changePhoto: $e, message: ${e.message?: String.empty()}")
-            }
-        }
-    }
-
-    internal fun getInitialInfo() {
-        viewModelScope.launch {
-            try {
-                val baby = getInitAction()
-                val birthday = baby.birthday?.toDateString() ?: String.empty()
-                state.value = DetailViewState(
-                    picture = baby.photo,
-                    name = baby.name,
-                    birthday = birthday,
-                    canShowInfo = baby.name.isNotBlank() && birthday.isNotBlank()
-                )
-            } catch (e: Exception) {
-                Timber.e("error occured in getInitAction: $e, message: ${e.message?: String.empty()}")
             }
         }
     }

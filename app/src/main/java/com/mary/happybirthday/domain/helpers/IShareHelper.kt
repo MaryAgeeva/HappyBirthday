@@ -11,7 +11,7 @@ interface IShareHelper {
     @Throws(
         FileNotSavedException::class
     )
-    suspend fun saveCard(bitmap: Bitmap) : String
+    suspend fun saveCard(bitmap: Bitmap) : Uri
 
     @Throws(
         FileNotCreatedException::class

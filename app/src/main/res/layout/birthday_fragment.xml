@@ -42,6 +42,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:src="@drawable/android_elephant_popup"/>
 
+    <ProgressBar
+        android:id="@+id/birthday_pb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"/>
+
     <ImageButton
         android:id="@+id/birthday_close_btn"
         android:layout_width="@dimen/birthday_close_btn_size"
@@ -143,5 +155,11 @@
         app:layout_constraintStart_toStartOf="@id/birthday_left_guideline"
         app:layout_constraintEnd_toEndOf="@id/birthday_right_guideline"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/birthday_btn_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="birthday_camera_btn,birthday_close_btn,birthday_share_btn"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
