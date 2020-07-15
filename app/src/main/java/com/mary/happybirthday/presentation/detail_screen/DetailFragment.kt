@@ -1,10 +1,8 @@
 package com.mary.happybirthday.presentation.detail_screen
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -23,6 +21,7 @@ class DetailFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
         detailViewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             if(state.name != detail_name_edit.text.toString())
@@ -39,14 +38,10 @@ class DetailFragment : BaseFragment() {
         })
 
         detailViewModel.photoState.observe(viewLifecycleOwner, Observer { path ->
-            if(path.toString().isNotBlank())
-                startActivityForResult(
-                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                        putExtra(MediaStore.EXTRA_OUTPUT, path)
-                    },
-                    REQUEST_CODE_CAMERA
-                )
+            if(path.temporaryUri.toString().isNotBlank())
+                openCamera(path.temporaryUri)
         })
+
         detailViewModel.getInitialInfo()
     }
 
@@ -86,14 +81,8 @@ class DetailFragment : BaseFragment() {
         detailViewModel.createPhoto()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK) {
-            when (requestCode) {
-                REQUEST_CODE_CAMERA -> detailViewModel.changePhoto(Uri.EMPTY, isCamera = true)
-                REQUEST_CODE_GALLERY -> detailViewModel.changePhoto(data?.data?: Uri.EMPTY)
-            }
-        }
+    override fun savePhoto(path: Uri, isCameraPhoto: Boolean) {
+        detailViewModel.changePhoto(path, isCameraPhoto)
     }
 
     companion object {

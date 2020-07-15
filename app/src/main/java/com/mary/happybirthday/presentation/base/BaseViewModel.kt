@@ -1,10 +1,10 @@
 package com.mary.happybirthday.presentation.base
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mary.happybirthday.domain.entity.CameraPhoto
 import com.mary.happybirthday.domain.use_cases.common.CreatePhotoFileUseCase
 import com.mary.happybirthday.domain.utils.empty
 import kotlinx.coroutines.launch
@@ -17,8 +17,8 @@ abstract class BaseViewModel<S>(
     protected val state: MutableLiveData<S> = MutableLiveData()
     internal val viewState: LiveData<S> = state
 
-    protected val photo: MutableLiveData<Uri> = MutableLiveData()
-    internal val photoState: LiveData<Uri> = this.photo
+    protected val photo: MutableLiveData<CameraPhoto> = MutableLiveData()
+    internal val photoState: LiveData<CameraPhoto> = this.photo
 
     internal fun createPhoto() {
         viewModelScope.launch {

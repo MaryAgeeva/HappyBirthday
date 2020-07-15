@@ -1,8 +1,10 @@
 package com.mary.happybirthday.presentation.base
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -56,11 +58,23 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_CAMERA -> savePhoto(isCameraPhoto = true)
+                REQUEST_CODE_GALLERY -> savePhoto(path = data?.data?: Uri.EMPTY)
+            }
+        }
+    }
+
     protected abstract fun initUI()
 
     protected abstract fun actionOnStoragePermissionGranted()
 
     protected abstract fun openCamera()
+
+    protected abstract fun savePhoto(path: Uri = Uri.EMPTY, isCameraPhoto: Boolean = false)
 
     private fun openGallery() {
         startActivityForResult(
@@ -69,17 +83,34 @@ abstract class BaseFragment : Fragment() {
         )
     }
 
+    protected fun openCamera(path: Uri) {
+        startActivityForResult(
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                putExtra(MediaStore.EXTRA_OUTPUT, path)
+            },
+            REQUEST_CODE_CAMERA
+        )
+    }
+
     protected fun checkPermissionAndExecute(action: () -> Unit) {
-        if(ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED)
+        if(!isPermissionSet(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            || !isPermissionSet(Manifest.permission.CAMERA))
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                ),
                 REQUEST_CODE_WRITE_STORAGE
             )
         else action()
+    }
+
+    private fun isPermissionSet(permission: String) : Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     protected companion object {

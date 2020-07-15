@@ -1,10 +1,12 @@
 package com.mary.happybirthday.data.helpers
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import androidx.core.content.FileProvider
+import com.mary.happybirthday.domain.entity.CameraPhoto
 import com.mary.happybirthday.domain.helpers.IShareHelper
 import com.mary.happybirthday.domain.utils.FileNotCreatedException
 import com.mary.happybirthday.domain.utils.FileNotSavedException
@@ -45,8 +47,9 @@ class ShareHelper(
     @Throws(
         FileNotCreatedException::class
     )
-    override suspend fun createFileForPicture(): Uri {
-        return try {
+    @Suppress("BlockingMethodInNonBlockingContext")
+    override suspend fun createFileForPicture(): CameraPhoto {
+        try {
             val timeStamp: String = Date().toReportDate()
             val storageDir: File = context.getExternalFilesDir(
                 Environment.DIRECTORY_PICTURES
@@ -56,10 +59,9 @@ class ShareHelper(
                 FORMAT,
                 storageDir
             )
-            FileProvider.getUriForFile(
-                context,
-                "${context.applicationContext.packageName}.provider",
-                file
+            return CameraPhoto(
+                temporaryUri = getUri(file),
+                absolutePath = file.absolutePath
             )
         } catch (e: Exception) {
             Timber.e("exception occured while creating Uri ShareHelper: $e, message: ${
@@ -69,11 +71,30 @@ class ShareHelper(
         }
     }
 
+    @Throws(
+        FileNotSavedException::class
+    )
+    override suspend fun savePicture(path: String) {
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            val f = File(path)
+            mediaScanIntent.data = Uri.fromFile(f)
+            context.sendBroadcast(mediaScanIntent)
+        }
+    }
+
     private fun createFilePath(forPhoto: Boolean = false): Paths {
         val folder = "${context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)}$FOLDER"
         return Paths(
             folder = folder,
             file = "$folder/${if(forPhoto) FILE_NAME_PHOTO else FILE_NAME}${Date().toReportDate()}.$FORMAT"
+        )
+    }
+
+    private fun getUri(file: File) : Uri {
+        return FileProvider.getUriForFile(
+            context,
+            "${context.applicationContext.packageName}.provider",
+            file
         )
     }
 

@@ -1,10 +1,10 @@
 package com.mary.happybirthday.presentation.birthday_screen
 
-import android.app.Activity
-import android.content.Intent
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import androidx.annotation.DrawableRes
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mary.happybirthday.R
@@ -20,8 +20,11 @@ class BirthdayFragment : BaseFragment() {
     private val birthdayViewModel: BirthdayViewModel by lifecycleScope.viewModel(this)
     override val viewResource = R.layout.birthday_fragment
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        //orientation locked for reasons to create uniformed user birthday card
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         birthdayViewModel.viewState.observe(viewLifecycleOwner, Observer { state ->
             birthday_header_tv.text = getString(R.string.birthday_title, state.name)
@@ -30,24 +33,7 @@ class BirthdayFragment : BaseFragment() {
                 else R.plurals.birthday_years,
                 state.age
             )
-            birthday_age_iv.setImageResource(
-                when(state.age) {
-                    0 -> R.drawable.num_zero
-                    1 -> R.drawable.num_one
-                    2 -> R.drawable.num_two
-                    3 -> R.drawable.num_three
-                    4 -> R.drawable.num_four
-                    5 -> R.drawable.num_five
-                    6 -> R.drawable.num_six
-                    7 -> R.drawable.num_seven
-                    8 -> R.drawable.num_eight
-                    9 -> R.drawable.num_nine
-                    10 -> R.drawable.num_ten
-                    11 -> R.drawable.num_eleven
-                    12 -> R.drawable.num_twelve
-                    else -> R.drawable.num_one
-                }
-            )
+            birthday_age_iv.setImageResource(mapAge(state.age))
             if(state.photo != null)
                 Picasso.get()
                     .load(state.photo)
@@ -56,13 +42,8 @@ class BirthdayFragment : BaseFragment() {
         })
 
         birthdayViewModel.photoState.observe(viewLifecycleOwner, Observer { path ->
-            if(path.toString().isNotBlank())
-                startActivityForResult(
-                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                        putExtra(MediaStore.EXTRA_OUTPUT, path)
-                    },
-                    REQUEST_CODE_CAMERA
-                )
+            if(path.temporaryUri.toString().isNotBlank())
+                openCamera(path.temporaryUri)
         })
     }
 
@@ -92,13 +73,26 @@ class BirthdayFragment : BaseFragment() {
         birthdayViewModel.createPhoto()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                REQUEST_CODE_CAMERA -> birthdayViewModel.changePhoto(Uri.EMPTY, isCamera = true)
-                REQUEST_CODE_GALLERY -> birthdayViewModel.changePhoto(data?.data?: Uri.EMPTY)
-            }
+    override fun savePhoto(path: Uri, isCameraPhoto: Boolean) {
+        birthdayViewModel.changePhoto(path, isCameraPhoto)
+    }
+
+    @DrawableRes private fun mapAge(age: Int) : Int {
+        return when(age) {
+            0 -> R.drawable.num_zero
+            1 -> R.drawable.num_one
+            2 -> R.drawable.num_two
+            3 -> R.drawable.num_three
+            4 -> R.drawable.num_four
+            5 -> R.drawable.num_five
+            6 -> R.drawable.num_six
+            7 -> R.drawable.num_seven
+            8 -> R.drawable.num_eight
+            9 -> R.drawable.num_nine
+            10 -> R.drawable.num_ten
+            11 -> R.drawable.num_eleven
+            12 -> R.drawable.num_twelve
+            else -> R.drawable.num_one
         }
     }
 
@@ -121,5 +115,4 @@ class BirthdayFragment : BaseFragment() {
             }
         }
     }
-
 }

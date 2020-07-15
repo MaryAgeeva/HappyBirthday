@@ -35,7 +35,7 @@ val featuresModule = module {
             GetBabyInfoUseCase(get())
         }
         scoped {
-            ChangeBabyInfoUseCase(get())
+            ChangeBabyInfoUseCase(get(), get())
         }
     }
 
@@ -45,7 +45,7 @@ val featuresModule = module {
             GetBirthdayInfoUseCase(get())
         }
         scoped {
-            ChangePhotoUseCase(get())
+            ChangePhotoUseCase(get(), get())
         }
     }
 }

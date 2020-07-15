@@ -1,11 +1,11 @@
 package com.mary.happybirthday.presentation.utils
 
 import android.graphics.Bitmap
-import android.view.Window
+import android.view.View
 
 class ScreenshotHelper {
 
-    internal fun takeScreenshot(window: Window) : Bitmap {
+    internal fun takeScreenshot(view: View) : Bitmap {
         TODO()
     }
 }

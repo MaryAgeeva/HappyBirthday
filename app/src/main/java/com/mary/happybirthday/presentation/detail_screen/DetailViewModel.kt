@@ -2,7 +2,9 @@ package com.mary.happybirthday.presentation.detail_screen
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.mary.happybirthday.domain.entity.CameraPhoto
 import com.mary.happybirthday.domain.use_cases.common.CreatePhotoFileUseCase
+import com.mary.happybirthday.domain.use_cases.common.Photo
 import com.mary.happybirthday.domain.use_cases.detail_screen.*
 import com.mary.happybirthday.domain.utils.empty
 import com.mary.happybirthday.presentation.base.BaseViewModel
@@ -50,13 +52,16 @@ internal class DetailViewModel(
 
     internal fun changePhoto(path: Uri, isCamera: Boolean = false) {
         viewModelScope.launch {
-            val photoPath = if(isCamera) (photo.value?.toString()?: String.empty()) else path.toString()
-            photo.value = Uri.EMPTY
-            state.value = state.value?.copy(
-                picture = photoPath
+            val resultPhoto = Photo(
+                pathToSave = if(isCamera) (photo.value?.absolutePath?: String.empty()) else path.toString(),
+                pathToShow = if(isCamera) (photo.value?.temporaryUri?.toString()?: String.empty()) else path.toString()
             )
             try {
-                changeInfoAction(Picture(photoPath))
+                changeInfoAction(Picture(resultPhoto))
+                photo.value = CameraPhoto()
+                state.value = state.value?.copy(
+                    picture = resultPhoto.pathToShow
+                )
             } catch (e: Exception) {
                 Timber.e("error occured in changePhoto: $e, message: ${e.message?: String.empty()}")
             }
