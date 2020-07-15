@@ -10,10 +10,10 @@ class BabyRepository(
     private val sharedPreferences: SharedPreferencesHelper
 ) : IBabyRepository {
 
-    private lateinit var currentBaby: Baby
+    private var currentBaby: Baby? = null
 
     override suspend fun getBabyInfo(): Baby {
-        if(!this::currentBaby.isInitialized) {
+        if(currentBaby == null) {
             val birthday = sharedPreferences.getBirthday()
             currentBaby = Baby(
                 name = sharedPreferences.getName()?: String.empty(),
@@ -21,26 +21,26 @@ class BabyRepository(
                 photo = sharedPreferences.getPicture()
             )
         }
-        return currentBaby
+        return currentBaby as Baby
     }
 
     override suspend fun changeName(name: String) {
         sharedPreferences.setName(name)
-        currentBaby = currentBaby.copy(
+        currentBaby = currentBaby?.copy(
             name = name
         )
     }
 
     override suspend fun changeBirthday(date: Date) {
         sharedPreferences.setBirthday(date.time)
-        currentBaby = currentBaby.copy(
+        currentBaby = currentBaby?.copy(
             birthday = date
         )
     }
 
     override suspend fun changePicture(path: String) {
         sharedPreferences.setPicture(path)
-        currentBaby = currentBaby.copy(
+        currentBaby = currentBaby?.copy(
             photo = path
         )
     }

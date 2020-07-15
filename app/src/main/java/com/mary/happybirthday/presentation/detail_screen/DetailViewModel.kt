@@ -2,7 +2,7 @@ package com.mary.happybirthday.presentation.detail_screen
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.mary.happybirthday.domain.use_cases.CreatePhotoFileUseCase
+import com.mary.happybirthday.domain.use_cases.common.CreatePhotoFileUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.*
 import com.mary.happybirthday.domain.utils.empty
 import com.mary.happybirthday.presentation.base.BaseViewModel

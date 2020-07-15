@@ -5,7 +5,7 @@ import com.mary.happybirthday.data.helpers.SharedPreferencesHelper
 import com.mary.happybirthday.data.repository.BabyRepository
 import com.mary.happybirthday.domain.helpers.IShareHelper
 import com.mary.happybirthday.domain.repository.IBabyRepository
-import com.mary.happybirthday.domain.use_cases.CreatePhotoFileUseCase
+import com.mary.happybirthday.domain.use_cases.common.CreatePhotoFileUseCase
 import com.mary.happybirthday.domain.use_cases.birthday_screen.ChangePhotoUseCase
 import com.mary.happybirthday.domain.use_cases.birthday_screen.GetBirthdayInfoUseCase
 import com.mary.happybirthday.domain.use_cases.detail_screen.ChangeBabyInfoUseCase

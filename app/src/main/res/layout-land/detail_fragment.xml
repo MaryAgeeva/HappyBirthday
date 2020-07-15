@@ -9,12 +9,13 @@
     <ImageView
         android:id="@+id/detail_back_iv"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:src="@drawable/bg_placeholder"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="0.5:1.5"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:id="@+id/detail_profile_iv"
@@ -37,8 +38,8 @@
         android:layout_marginHorizontal="@dimen/margin_intermediate"
         android:layout_marginVertical="@dimen/margin_large_medium"
         app:hintTextColor="@color/secondary_text"
-        app:layout_constraintTop_toBottomOf="@id/detail_back_iv"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/detail_back_iv"
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +61,7 @@
         android:layout_marginVertical="@dimen/margin_large_medium"
         app:hintTextColor="@color/secondary_text"
         app:layout_constraintTop_toBottomOf="@id/detail_name_txt"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/detail_back_iv"
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -87,8 +88,8 @@
         android:layout_marginVertical="@dimen/margin_large"
         android:paddingHorizontal="@dimen/padding_large_medium"
         android:paddingVertical="@dimen/padding_medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detail_dob_txt"/>
+        app:layout_constraintTop_toBottomOf="@id/detail_dob_txt"
+        app:layout_constraintStart_toEndOf="@id/detail_back_iv"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

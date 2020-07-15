@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mary.happybirthday.domain.use_cases.CreatePhotoFileUseCase
+import com.mary.happybirthday.domain.use_cases.common.CreatePhotoFileUseCase
 import com.mary.happybirthday.domain.utils.empty
 import kotlinx.coroutines.launch
 import timber.log.Timber

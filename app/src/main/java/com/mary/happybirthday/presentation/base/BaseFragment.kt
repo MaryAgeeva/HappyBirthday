@@ -29,18 +29,19 @@ abstract class BaseFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initUI()
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.
-            getLiveData<ImagePickType>(CAMERA_CHOSEN)?.observe(viewLifecycleOwner, Observer { type ->
-            if(type == ImagePickType.GALLERY || type == ImagePickType.CAMERA) {
-                when(type) {
-                    ImagePickType.CAMERA -> openCamera()
-                    ImagePickType.GALLERY -> openGallery()
-                    else -> { /* Do nothing */ }
+        findNavController().currentBackStackEntry?.savedStateHandle?.let {
+            it.getLiveData<ImagePickType>(CAMERA_CHOSEN).observe(viewLifecycleOwner, Observer { type ->
+                if(type == ImagePickType.CAMERA || type == ImagePickType.GALLERY) {
+                    it.set(CAMERA_CHOSEN, ImagePickType.UNDEFINED)
+                    when (type) {
+                        ImagePickType.CAMERA -> openCamera()
+                        ImagePickType.GALLERY -> openGallery()
+                        else -> { /* Do nothing */
+                        }
+                    }
                 }
-                findNavController().currentBackStackEntry?.savedStateHandle?.set(
-                    CAMERA_CHOSEN, ImagePickType.UNDEFINED)
-            }
-        })
+            })
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -59,6 +60,15 @@ abstract class BaseFragment : Fragment() {
 
     protected abstract fun actionOnStoragePermissionGranted()
 
+    protected abstract fun openCamera()
+
+    private fun openGallery() {
+        startActivityForResult(
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+            REQUEST_CODE_GALLERY
+        )
+    }
+
     protected fun checkPermissionAndExecute(action: () -> Unit) {
         if(ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -71,15 +81,6 @@ abstract class BaseFragment : Fragment() {
             )
         else action()
     }
-
-    private fun openGallery() {
-        startActivityForResult(
-            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
-            REQUEST_CODE_GALLERY
-        )
-    }
-
-    protected abstract fun openCamera()
 
     protected companion object {
         const val REQUEST_CODE_WRITE_STORAGE = 111
