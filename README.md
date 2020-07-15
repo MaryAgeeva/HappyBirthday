@@ -1,4 +1,4 @@
-# HappyBirthday
+# Happy Birthday
 
 Test project, where user can add information about his baby and create baby's birthday cards.
 
