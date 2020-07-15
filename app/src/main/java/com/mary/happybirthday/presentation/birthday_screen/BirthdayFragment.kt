@@ -75,7 +75,9 @@ class BirthdayFragment : BaseFragment() {
         }
 
         birthday_share_btn.setOnClickListener {
-            birthday_btn_group.hide()
+            birthday_share_btn.hide()
+            birthday_camera_btn.hide()
+            birthday_close_btn.hide()
             screenshotHelper.takeScreenshot(requireView())?.let { screenshot ->
                 birthday_pb.show()
                 birthdayViewModel.shareScreenshot(screenshot)
