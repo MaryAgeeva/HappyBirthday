@@ -7,5 +7,6 @@ Project was developed for Android SDK 21 and higher
 Project was created using:
  - language : Kotlin
  - architecture : Clean architecture + MVVM pattern
- - concurency : coroutines
+ - concurency : Kotlin coroutines
+ - DI: Koin
 
